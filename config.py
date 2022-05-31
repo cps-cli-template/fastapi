@@ -1,5 +1,6 @@
 from pydantic import BaseSettings
 from functools import lru_cache
+from os import path
 
 description = """自用的脚手架，集成一些<b>常用</b>的功能：
 <br> 1、离线的swagger和redoc
@@ -34,6 +35,11 @@ class Settings(BaseSettings):
     port: int = 4040  # 端口
     log_level: str = "info"  # 日志等级
     DEV: bool = True  # 是否开发模式
+    contact: dict = contact
+    license_info: dict = license_info
+    upload_path: str = (
+        r"D:\CPS\MyProject\demo\cps-cli\cps-cli-template-fastapi\test\upload"
+    )
 
     class Config:
         env_file = ".env"  # 读取失败

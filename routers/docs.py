@@ -10,7 +10,7 @@
 # @Description: 功能描述
 #
 
-from fastapi import APIRouter
+from fastapi import FastAPI, APIRouter
 
 from fastapi.openapi.docs import (
     get_redoc_html,
@@ -21,11 +21,11 @@ from fastapi.openapi.docs import (
 router = APIRouter()
 
 
-def init(app):
+def init(app: FastAPI, swagger_route: str = "/docs", redoc_route: str = "/redoc"):
     swagger_ui_oauth2_redirect_url = app.swagger_ui_oauth2_redirect_url
 
     # 将 /docs 重置到离线
-    @router.get("/docs", include_in_schema=False)
+    @router.get(swagger_route, include_in_schema=False)
     async def custom_swagger_ui_html():
         return get_swagger_ui_html(
             openapi_url=app.openapi_url,
@@ -41,7 +41,7 @@ def init(app):
         return get_swagger_ui_oauth2_redirect_html()
 
     # redoc 重置到离线
-    @router.get("/redoc", include_in_schema=False)
+    @router.get(redoc_route, include_in_schema=False)
     async def redoc_html():
         return get_redoc_html(
             openapi_url=app.openapi_url,
@@ -49,7 +49,9 @@ def init(app):
             redoc_js_url="/static/redoc.standalone.js",
         )
 
-    return router
+    app.include_router(router)
+
+    return app
 
 
 if __name__ == "__main__":
