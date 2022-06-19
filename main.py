@@ -13,26 +13,19 @@
 import uvicorn
 from fastapi import FastAPI, Depends
 
+
 from config import get_settings, Settings
+from utils import logger
 
-from routers import docs, static
-from routers.v1 import test
-
-
+config = get_settings()
 app = FastAPI(
-    title=get_settings().app_name,
-    description=get_settings().description,
-    version=get_settings().version,
-    contact=get_settings().contact,
+    title=config.app_name,
+    description=config.description,
+    version=config.version,
+    contact=config.contact,
     docs_url=None,
     redoc_url=None,
-    # openapi_url=None,
 )
-
-static.init(app, directory="static", route="/static")
-docs.init(app, swagger_route="/docs", redoc_route="/redoc")
-
-app.include_router(test.router)
 
 
 @app.get("/", summary="显示当前服务器所有配置 （开发模式下）")
@@ -40,14 +33,31 @@ async def root(settings: Settings = Depends(get_settings)):
     return {"msg": "当前服务器配置", **settings.dict()}
 
 
-@app.get("/exit", summary="退出服务器 （开发模式下）")
-async def Exit():
-    exit()
+if config.log_engine == "loguru":
+    logger.init(app)
 
+if config.static_enable:
+    from routers import static
 
-@app.get("/restart", summary="重启服务器 （开发模式下）")
-async def restart():
-    exit()
+    static.init(app, directory="static", route="/static")
+
+if config.swagger_enable:
+    from routers import docs
+
+    docs.init(app, swagger_route="/docs", redoc_route="/redoc")
+
+if config.DEV:
+    from routers.v1 import test
+
+    app.include_router(test.router)
+
+    @app.get("/exit", summary="退出服务器 （开发模式下）")
+    async def Exit():
+        exit()
+
+    @app.get("/restart", summary="重启服务器 （开发模式下）")
+    async def restart():
+        exit()
 
 
 if __name__ == "__main__":
@@ -56,8 +66,8 @@ if __name__ == "__main__":
     file_name = path.splitext(path.basename(__file__))[0]
     uvicorn.run(
         f"{file_name}:app",
-        host=get_settings().host,  # 地址
-        port=get_settings().port,  # 端口
-        log_level=get_settings().log_level,  # 日志等级
-        reload=get_settings().DEV,  # 热更新
+        host=config.host,  # 地址
+        port=config.port,  # 端口
+        log_level=config.log_level,  # 日志等级
+        reload=config.DEV,  # 热更新
     )
