@@ -13,33 +13,36 @@ import sys
 from os import path
 
 sys.path.append("..")
-from fastapi import APIRouter, File, UploadFile, Depends, BackgroundTasks
+from fastapi import APIRouter, File, UploadFile, Depends, BackgroundTasks, HTTPException
 import time
 
 from tools.test import delay
-
+from tools.uploader import Uploader
 from fastapi.responses import HTMLResponse
-
 from config import get_settings, Settings
+from Types import Res
 
 router = APIRouter()
 
 
-async def saveFile(save_path: str, data: bytes) -> bool:
-    with open(save_path, "wb") as f:
-        f.write(data)
-        return True
-    return False
+@router.post("/upload")
+async def create_upload_file(
+    file: File(...), bg: BackgroundTasks, config: Settings = Depends(get_settings)
+):
+    output_path = path(config.path_upload, file.filename)
+
+    upload_res = await Uploader.stream_file(file, output_path)
+
+    if upload_res:
+        return Res(msg="上传成功")
+    else:
+        raise HTTPException(detail="上传失败")
 
 
-# 小文件 bytes类型 以内存方式
-@router.post("/file/")
-async def create_file(file: bytes = File()):
-
-    return {
-        "file_size": len(file),
-    }
-
+# 大文件(单个)
+# 大文件(多个)
+# 小文件(单个)
+# 小文件(多个)
 
 # 大文件 以io方式
 @router.post("/uploadfile/")
@@ -51,7 +54,7 @@ async def create_upload_file(
     try:
         data = await file.read()
         out_path = path.join(config.upload_path, file.filename)
-        res = await saveFile(out_path, data)
+        has_upload = await Uploader.small_file(out_path, data)
 
         file_info = {
             "success": True,
@@ -63,22 +66,11 @@ async def create_upload_file(
         }
 
         # delay(5, msg="处理文件中")
-        print("处理开始")
         bg.add_task(delay, 5, msg="处理文件中")
-        print("处理完成")
+
         return file_info
     except Exception as err:
         return {"success": False, "err": err}
-
-
-# @router.post("/files/")
-# async def create_files(files: list[bytes] = File()):
-#     return {"file_sizes": [len(file) for file in files]}
-
-
-# @router.post("/uploadfiles/")
-# async def create_upload_files(files: list[UploadFile]):
-#     return {"filenames": [file.filename for file in files]}
 
 
 @router.get("/file/test")

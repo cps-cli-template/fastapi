@@ -1,9 +1,10 @@
 import os
+from os import path
 
 from pydantic import BaseSettings
 from functools import lru_cache
-from description import DESCRIPTION, LICENSE_INFO, CONTACT
-from os import path
+
+from docs.description import DESCRIPTION, LICENSE_INFO, CONTACT
 
 
 ROOT_PATH = os.getcwd()
@@ -11,6 +12,7 @@ ROOT_PATH = os.getcwd()
 
 class Settings(BaseSettings):
     DEV: bool = True  # 是否开发模式
+
     description: str = DESCRIPTION
     version: str = "v1"
     admin_email: str = "373704015@qq.com"
@@ -30,12 +32,13 @@ class Settings(BaseSettings):
     enable_schedule: bool = False  # 是否开启定时任务
     enable_gzip: bool = False  # 是否开启gzip亚索
     enable_cors: bool = False  # 是否开启跨域
-    enable_upload: bool = False  # 是否开启上传文件接口
+    enable_upload: bool = True  # 是否开启上传文件接口
     enable_swagger: bool = True  # 是否开启swagger
 
-    path_log: str = os.join(ROOT_PATH, "logs")  # 日志目录
-    path_static: str = os.join(ROOT_PATH, "static")
-    path_upload: str = os.join(ROOT_PATH, "static", "upload")
+    # 常用目录配置
+    path_log: str = path.join(ROOT_PATH, "logs")  # 日志目录
+    path_static: str = path.join(ROOT_PATH, "static")
+    path_upload: str = path.join(ROOT_PATH, "static", "upload")
 
     class Config:
         env_file = "config.ini"  # 读取失败
@@ -45,5 +48,5 @@ class Settings(BaseSettings):
 # 缓存配置文件到cache，不用每次调用接口都读取文件io
 @lru_cache
 def get_settings():
-    print("创建setting对象")
+    print("服务器初始化: ")
     return Settings()

@@ -45,8 +45,8 @@ def init(app: FastAPI):
         logging_logger = logging.getLogger(logger_name)
         logging_logger.handlers = [InterceptHandler(level=0)]
 
-    log_file_path = os.path.join(config.log_dir, "wise.log")
-    err_log_file_path = os.path.join(config.log_dir, "wise.err.log")
+    log_file_path = os.path.join(config.path_log, "wise.log")
+    err_log_file_path = os.path.join(config.path_log, "wise.err.log")
 
     loguru_config = {
         "handlers": [
@@ -56,7 +56,8 @@ def init(app: FastAPI):
                 "format": "<green>{time:YYYY-mm-dd HH:mm:ss.SSS}</green> |"
                 + " {thread.name} |"
                 + " <level>{level}</level> |"
-                + " <cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> - <level>{message}</level>",
+                + " <cyan>{module}</cyan>:<cyan>{function}</cyan>:<cyan>{line}</cyan> -"
+                " <level>{message}</level>",
             },
             {"sink": log_file_path, "rotation": "00:00", "encoding": "utf-8"},
             {
@@ -66,7 +67,7 @@ def init(app: FastAPI):
                 "rotation": "00:00",
                 "encoding": "utf-8",
             },
-        ],
+        ]
     }
 
     logger.configure(**loguru_config)
