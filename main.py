@@ -36,12 +36,12 @@ async def root(settings: Settings = Depends(get_settings)):
 if config.log_engine == "loguru":
     logger.init(app)
 
-if config.static_enable:
+if config.enable_static:
     from routers import static
 
     static.init(app, directory="static", route="/static")
 
-if config.swagger_enable:
+if config.enable_swagger:
     from routers import docs
 
     docs.init(app, swagger_route="/docs", redoc_route="/redoc")
@@ -66,8 +66,8 @@ if __name__ == "__main__":
     file_name = path.splitext(path.basename(__file__))[0]
     uvicorn.run(
         f"{file_name}:app",
-        host=config.host,  # 地址
-        port=config.port,  # 端口
+        host=config.app_host,  # 地址
+        port=config.app_port,  # 端口
         log_level=config.log_level,  # 日志等级
         reload=config.DEV,  # 热更新
     )
