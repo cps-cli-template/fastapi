@@ -47,7 +47,7 @@ if config.enable_swagger:
     docs.init(app, swagger_route="/docs", redoc_route="/redoc")
 
 if config.DEV:
-    from routers.v1 import test
+    from routers import test
 
     app.include_router(test.router)
 

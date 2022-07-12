@@ -10,12 +10,13 @@
 # @Description: 功能描述
 #
 
-from typing import *
+import asyncio
 from fastapi import APIRouter, HTTPException, Query, Path
 from pydantic import BaseModel, Field
+from loguru import logger
 
 router = APIRouter(
-    tags=["test", "v1"], prefix="/v1", responses={404: {"description": "Not found"}}
+    tags=["test"], prefix="/test", responses={404: {"description": "Not found"}}
 )
 
 
@@ -32,16 +33,24 @@ class Req(BaseModel):
         schema_extra: Req_example
 
 
-@router.get("/", description="测试接口get")
+# @router.get("/", description="测试接口get")
 async def test_get(test_params: str = None):
     return {"msg": "api v1 test", "input_param": test_params}
 
 
-@router.get("/test", description="测试接口get")
-async def test_get(test_params: str = Query(default=None)):
-    return {"test_params": test_params}
+@router.get("/get/{test_param}", description="测试接口get")
+async def test_get(test_param: str = Path(default=None)):
+    for each in range(5):
+        await asyncio.sleep(1)
+        logger.debug(f'get 请求处理中： {test_param}')
+
+    return {"test_params": test_param}
 
 
-@router.post("/test", description="post")
+@router.post("/post", description="测试接口post")
 async def test_post(req: Req):
+    for each in range(5):
+        await asyncio.sleep(1)
+        logger.debug(f'post 请求处理中。 {Req}')
+
     return {"test_params": Req.request_str}
