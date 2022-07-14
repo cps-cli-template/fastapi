@@ -4,7 +4,7 @@ routers "路由目录"
 dependencies "一些全局依赖（自定义header、jwt验证、auth验证等）"
 
 .
-├── app                  # 「app」是一个 Python 包
+├── app                   # 「app」是一个 Python 包
 │    ├── __init__.py      # 这个文件使「app」成为一个 Python 包
 │    ├── main.py          # 「main」模块，例如 import app.main
 │    ├── dependencies.py  # 「dependencies」模块，例如 import app.dependencies
