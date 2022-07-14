@@ -20,7 +20,7 @@ from tools.test import delay
 from tools.uploader import Uploader
 from fastapi.responses import HTMLResponse
 from config import get_settings, Settings
-from Types import Res
+from Types import Res, Err, Fileinfo
 
 router = APIRouter()
 
@@ -44,31 +44,32 @@ async def create_upload_file(
 # 小文件(单个)
 # 小文件(多个)
 
-# 大文件 以io方式
+# 小文件 以io方式
 @router.post("/uploadfile/")
 async def create_upload_file(
     file: UploadFile, bg: BackgroundTasks, config: Settings = Depends(get_settings)
 ):
-
-    start = time.time()
     try:
         data = await file.read()
         out_path = path.join(config.upload_path, file.filename)
         has_upload = await Uploader.small_file(out_path, data)
 
-        file_info = {
-            "success": True,
-            "file_name": file.filename,
-            "file_content_type": file.content_type,
-            "len": len(data),
-            "size": f"{round(len(data) / 1024 / 1027, 2)} mb",
-            "file_path": out_path,
-        }
+        size = f"{round(len(data) / 1024 / 1027, 2)} mb"
+        file_info = Fileinfo(
+            len=len(data),
+            size=size,
+            file_name=file.filename,
+            file_type=file.content_type,
+            file_path=out_path,
+        )
 
         # delay(5, msg="处理文件中")
         bg.add_task(delay, 5, msg="处理文件中")
 
-        return file_info
+        if has_upload:
+            return Res(msg="上传成功", res=file_info)
+
+        return Err(msg="上传失败")
     except Exception as err:
         return {"success": False, "err": err}
 
@@ -114,6 +115,6 @@ form{
 <input type="submit">
 </form>
 
-</body>
-    """
+</body>"""
+
     return HTMLResponse(content=content)

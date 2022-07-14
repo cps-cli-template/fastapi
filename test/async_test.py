@@ -2,7 +2,7 @@ import time, aiohttp, asyncio
 from aiohttp import web
 
 
-async def multi_request(urls, data_list: list = list()) -> list:
+async def multi_request(urls: list[str], data_list: list = list()) -> list:
     """
     @Description {description}
 
@@ -46,12 +46,11 @@ async def main(urls):
     end = time.time()
 
     print('总耗时: ', round(end - start, 3))
+    print(res)
 
 
 if __name__ == '__main__':
     urls = ['http://localhost:4040/test/get/{0}'.format(e) for e in range(10)]
-    print("urls: ", urls)
 
     task = main(urls)
-
     asyncio.run(task)

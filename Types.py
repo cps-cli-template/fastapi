@@ -27,3 +27,11 @@ class Res(BaseModel):
 class Err(Res):
     success: bool = False
     msg: str = "请求失败"
+
+
+class Fileinfo(BaseModel):
+    file_name: str
+    file_path: str
+    file_type: str
+    size: str
+    len: int

@@ -13,7 +13,7 @@
 
 class Uploader:
     @staticmethod
-    async def save_file(data: bytes, output_path: str) -> bool:
+    async def small_file(data: bytes, output_path: str) -> bool:
         """
         小文件上传，文件首先保存到内存，然后再到本地
         """
