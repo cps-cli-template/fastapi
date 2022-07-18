@@ -18,14 +18,21 @@ from fastapi.openapi.docs import (
     get_swagger_ui_oauth2_redirect_html,
 )
 
+from config import get_settings
+
 router = APIRouter()
 
 
 def init(app: FastAPI, swagger_route: str = "/docs", redoc_route: str = "/redoc"):
+    config = get_settings()
+
+    if not config.swagger_enable:
+        return
+
     swagger_ui_oauth2_redirect_url = app.swagger_ui_oauth2_redirect_url
 
     # 将 /docs 重置到离线
-    @router.get(swagger_route, include_in_schema=False)
+    @router.get(config.swagger_route, include_in_schema=False)
     async def custom_swagger_ui_html():
         return get_swagger_ui_html(
             openapi_url=app.openapi_url,
@@ -41,7 +48,7 @@ def init(app: FastAPI, swagger_route: str = "/docs", redoc_route: str = "/redoc"
         return get_swagger_ui_oauth2_redirect_html()
 
     # redoc 重置到离线
-    @router.get(redoc_route, include_in_schema=False)
+    @router.get(config.redoc_route, include_in_schema=False)
     async def redoc_html():
         return get_redoc_html(
             openapi_url=app.openapi_url,

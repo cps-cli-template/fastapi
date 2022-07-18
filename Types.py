@@ -12,10 +12,20 @@
 import os, sys
 from typing import Any
 
-sys.path.append('..')
+sys.path.append("..")
 from os import path
 
 from pydantic import BaseModel
+
+
+class RedisOptions(BaseModel):
+    url: str = "redis://127.0.0.1/0"
+    host: str = "127.0.0.1"
+    encoding: str = "utf-8"
+    decode_responses: bool = True
+    port: int = 6379
+    db: int | str = 0
+    max_connections: int = 100
 
 
 class Res(BaseModel):

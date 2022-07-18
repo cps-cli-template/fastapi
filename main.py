@@ -15,41 +15,31 @@ from fastapi import FastAPI, Depends
 
 
 from config import get_settings, Settings
+
 from utils import logger
+from routers import docs, static, test
 
 config = get_settings()
 app = FastAPI(
     title=config.app_name,
-    description=config.description,
-    version=config.version,
-    contact=config.contact,
+    description=config.app_description,
+    version=config.app_version,
+    contact=config.app_contact,
     docs_url=None,
     redoc_url=None,
 )
 
 
-@app.get("/", summary="显示当前服务器所有配置 （开发模式下）")
-async def root(settings: Settings = Depends(get_settings)):
-    return {"msg": "当前服务器配置", **settings.dict()}
-
-
-if config.log_engine == "loguru":
-    logger.init(app)
-
-if config.enable_static:
-    from routers import static
-
-    static.init(app, directory="static", route="/static")
-
-if config.enable_swagger:
-    from routers import docs
-
-    docs.init(app, swagger_route="/docs", redoc_route="/redoc")
+logger.init(app)
+static.init(app)
+docs.init(app)
 
 if config.DEV:
-    from routers import test
-
     app.include_router(test.router)
+
+    @app.get("/", summary="显示当前服务器所有配置 （开发模式下）")
+    async def root(settings: Settings = Depends(get_settings)):
+        return {"msg": "当前服务器配置", **settings.dict()}
 
     @app.get("/exit", summary="退出服务器 （开发模式下）")
     async def Exit():
@@ -71,3 +61,4 @@ if __name__ == "__main__":
         log_level=config.log_level,  # 日志等级
         reload=config.DEV,  # 热更新
     )
+    print(f"app 运行成功，请访问: http://{config.app_host}:{config.app_port}")

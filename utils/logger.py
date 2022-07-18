@@ -37,6 +37,9 @@ class InterceptHandler(logging.Handler):
 
 def init(app: FastAPI):
     config = get_settings()
+    if not config.log_engine == "loguru":
+        return app
+
     LOGGING_LEVEL = logging.DEBUG if config.DEV else logging.INFO
     LOGGERS = ("uvicorn.asgi", "uvicorn.access")
 
@@ -45,8 +48,8 @@ def init(app: FastAPI):
         logging_logger = logging.getLogger(logger_name)
         logging_logger.handlers = [InterceptHandler(level=0)]
 
-    log_file_path = os.path.join(config.path_log, "wise.log")
-    err_log_file_path = os.path.join(config.path_log, "wise.err.log")
+    log_file_path = os.path.join(config.log_path, "wise.log")
+    err_log_file_path = os.path.join(config.log_path, "wise.err.log")
 
     loguru_config = {
         "handlers": [
@@ -72,3 +75,4 @@ def init(app: FastAPI):
 
     logger.configure(**loguru_config)
     m_logger.init(app)
+    return app

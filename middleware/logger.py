@@ -29,3 +29,5 @@ def init(app: FastAPI):
 
         response = await call_next(request)
         return response
+
+    return app
