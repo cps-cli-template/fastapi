@@ -27,7 +27,7 @@ router = APIRouter()
 
 @router.post("/upload")
 async def create_upload_file(
-    file: File(...), bg: BackgroundTasks, config: Settings = Depends(get_settings)
+    file: UploadFile = File(...), config: Settings = Depends(get_settings)
 ):
     output_path = path(config.path_upload, file.filename)
 

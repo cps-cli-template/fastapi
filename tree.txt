@@ -1,0 +1,40 @@
+D:\CPS\MyProject\Projects_Personal\cps-cli\cps-cli-template-fastapi
+|-- README.md
+|-- main.py
+|-- tree.txt
+|-- tree.yaml
+|-- Types.py
+|-- config.ini
+|-- config.py
+|-- requirements.txt
+|-- dependencies
+|-- docs
+|   `-- description.py
+|-- events
+|   `-- startup.py
+|-- internal
+|-- logs
+|-- middleware
+|   |-- cors.py
+|   |-- gzip.py
+|   `-- logger.py
+|-- routers
+|   |-- docs.py
+|   |-- static.py
+|   |-- test.py
+|   |-- upload.py
+|   `-- v1
+|-- static
+|   |-- redoc.standalone.js
+|   |-- swagger-ui-bundle.js
+|   `-- swagger-ui.css
+|-- test
+|   |-- async_test.py
+|   `-- upload
+|-- test.py
+|-- tools
+|   |-- schedule.py
+|   |-- test.py
+|   `-- uploader.py
+`-- utils
+    `-- logger.py
