@@ -1,40 +1,48 @@
-D:\CPS\MyProject\Projects_Personal\cps-cli\cps-cli-template-fastapi
-|-- README.md
-|-- main.py
-|-- tree.txt
-|-- tree.yaml
-|-- Types.py
-|-- config.ini
-|-- config.py
-|-- requirements.txt
-|-- dependencies
-|-- docs
-|   `-- description.py
-|-- events
-|   `-- startup.py
-|-- internal
-|-- logs
-|-- middleware
-|   |-- cors.py
-|   |-- gzip.py
-|   `-- logger.py
-|-- routers
-|   |-- docs.py
-|   |-- static.py
-|   |-- test.py
-|   |-- upload.py
-|   `-- v1
-|-- static
-|   |-- redoc.standalone.js
-|   |-- swagger-ui-bundle.js
-|   `-- swagger-ui.css
-|-- test
-|   |-- async_test.py
-|   `-- upload
-|-- test.py
-|-- tools
-|   |-- schedule.py
-|   |-- test.py
-|   `-- uploader.py
-`-- utils
-    `-- logger.py
+DIR:template-fastapi                 # 
+   |-- dependencies/                 # 「dependencies」
+   |   `-- __init__.py               # 
+   |-- docs/                         # 「docs」
+   |   |-- __init__.py               # 
+   |   `-- description.py            # 
+   |-- events/                       # 「events」
+   |   |-- __init__.py               # 
+   |   |-- startup.py                # 
+   |   `-- config_check.py           # 
+   |-- internal/                     # 「internal」
+   |   `-- __init__.py               # 
+   |-- middleware/                   # 「middleware」
+   |   |-- logger.py                 # 
+   |   |-- gzip.py                   # 
+   |   `-- cors.py                   # 
+   |-- routers/                      # 「routers」
+   |   |-- v1/                       # 「v1」
+   |   |   `-- __init__.py           # 
+   |   |-- __init__.py               # 
+   |   |-- upload_router_template.py # 
+   |   |-- upload.py                 # 
+   |   |-- test.py                   # 
+   |   |-- static.py                 # 
+   |   `-- docs.py                   # 
+   |-- static/                       # 「static」
+   |   |-- swagger-ui.css            # 
+   |   |-- swagger-ui-bundle.js      # 
+   |   `-- redoc.standalone.js       # 
+   |-- test/                         # 「test」
+   |   `-- async_test.py             # 
+   |-- tools/                        # 「tools」
+   |   |-- __init__.py               # 
+   |   |-- uploader.py               # 
+   |   |-- test.py                   # 
+   |   `-- schedule.py               # 
+   |-- utils/                        # 「utils」
+   |   `-- logger.py                 # 
+   |-- __init__.py                   # 
+   |-- Types.py                      # 
+   |-- tree.yaml                     # 
+   |-- test.py                       # 
+   |-- requirements.txt              # 
+   |-- README                        # 
+   |-- main.py                       # 
+   |-- config.py                     # 
+   |-- config.ini                    # 
+   `-- .gitignore                    # 

@@ -32,6 +32,7 @@ app = FastAPI(
 # 启动事件
 startup.init(app)
 
+#
 logger.init(app)
 static.init(app)
 docs.init(app)
