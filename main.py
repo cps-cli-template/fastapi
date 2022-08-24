@@ -13,7 +13,7 @@
 import uvicorn
 from fastapi import FastAPI, Depends
 
-
+from events import startup
 from config import get_settings, Settings
 
 from utils import logger
@@ -29,6 +29,8 @@ app = FastAPI(
     redoc_url=None,
 )
 
+# 启动事件
+startup.init(app)
 
 logger.init(app)
 static.init(app)

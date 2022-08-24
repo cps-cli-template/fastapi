@@ -12,9 +12,21 @@
 import os, sys
 
 sys.path.append("..")
+if __name__ == "__main__":
+    sys.path.append("../../")
+
 
 from os import path
-from pydantic import BaseModel
+from fastapi import FastAPI
 
-if __name__ == "__main__":
-    pass
+from config import get_settings
+from events import config_check
+
+
+def init(app: FastAPI) -> FastAPI:
+    config = get_settings()
+
+    @app.on_event("startup")
+    def events_config_check():
+        # 检查所有config里面以_path结尾的目录，如果不存在则创建
+        config_check.check_path_and_make(config)
