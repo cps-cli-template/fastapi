@@ -14,7 +14,6 @@ import uvicorn
 from fastapi import FastAPI, Depends
 
 from config import get_settings, Settings
-
 from routers import docs, static, upload
 from routers.v1 import test
 

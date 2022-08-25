@@ -22,6 +22,9 @@ class Settings(BaseSettings):
     app_contact: dict = CONTACT
     app_license_info: dict = LICENSE_INFO
 
+    # 跨域设置
+    cors_enable: bool = True  # 默认开启
+
     # 日志相关
     log_enable: bool = True
     log_level: str = "debug"  # 日志等级

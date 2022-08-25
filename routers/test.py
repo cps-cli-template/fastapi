@@ -54,3 +54,7 @@ async def test_post(req: Req):
         logger.debug(f'post 请求处理中。 {Req}')
 
     return {"test_params": Req.request_str}
+
+@router.post("/upload_test", description="上传测试")
+async def test_upload(file:UploadFile):
+    

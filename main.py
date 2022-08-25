@@ -17,7 +17,7 @@ from fastapi import FastAPI, Depends
 from config import get_settings, Settings
 
 from utils import logger
-from routers import docs, static, test
+from routers import docs, static, test, upload
 
 config = get_settings()
 app = FastAPI(
