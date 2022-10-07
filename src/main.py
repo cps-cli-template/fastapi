@@ -16,8 +16,11 @@ from fastapi import FastAPI, Depends
 from events import startup
 from config import get_settings, Settings
 
+from middleware import index as middleware
+
 from utils.log import logger
-from routers import docs, static, test, upload
+from routers import docs, static, test, upload, router_template
+
 
 config = get_settings()
 app = FastAPI(
@@ -33,13 +36,15 @@ app = FastAPI(
 startup.init(app)
 upload.init(app)
 
+# 中间件
+middleware.init(app, config)
 
 # logger.init(app)
 static.init(app)
 docs.init(app)
 
 if config.DEV:
-    app.include_router(test.router)
+    app.include_router(router_template.router)
 
     @app.get("/", summary="显示当前服务器所有配置 （开发模式下）")
     async def root(settings: Settings = Depends(get_settings)):

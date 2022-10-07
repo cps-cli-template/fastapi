@@ -23,8 +23,10 @@ class Settings(BaseSettings):
     app_contact: dict = CONTACT
     app_license_info: dict = LICENSE_INFO
 
-    # 跨域设置
-    cors_enable: bool = True  # 默认开启
+    # 预置中间件
+    middleware_cors_enable: bool = False  # 跨域
+    middleware_gzip_enable: bool = False  # gzip压缩（尽量使用nginx的）
+    middleware_http_time_count_enable: bool = True  # 计算请求处理时间
 
     # 日志相关
     log_enable: bool = True
@@ -64,6 +66,6 @@ class Settings(BaseSettings):
 # settings = Settings()
 # 缓存配置文件到cache，不用每次调用接口都读取文件io
 @lru_cache
-def get_settings():
+def get_settings() -> Settings:
     print("服务器初始化: ", os.getcwd())
     return Settings()

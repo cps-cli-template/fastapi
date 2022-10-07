@@ -14,13 +14,13 @@ import os, sys
 sys.path.append("..")
 
 import loguru
-
 from typing import Any
 
 
 class Logger:
     def __init__(self):
         self.logger = loguru.logger
+        self.catch = loguru.logger.catch
 
     def __msg(self, *msg: list[Any]) -> str:
         return "".join(map(str, msg))
