@@ -21,6 +21,7 @@ from fastapi import FastAPI
 
 from config import get_settings
 from events import config_check
+from utils.helper import print_dict
 
 
 def init(app: FastAPI) -> FastAPI:
@@ -30,3 +31,7 @@ def init(app: FastAPI) -> FastAPI:
     def events_config_check():
         # 检查所有config里面以_path结尾的目录，如果不存在则创建
         config_check.check_path_and_make(config)
+
+    @app.on_event("startup")
+    def print_config():
+        print_dict(config.dict())

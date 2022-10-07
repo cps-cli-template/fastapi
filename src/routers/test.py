@@ -11,7 +11,7 @@
 #
 
 import asyncio
-from fastapi import APIRouter, HTTPException, Query, Path
+from fastapi import APIRouter, HTTPException, Query, Path, UploadFile
 from pydantic import BaseModel, Field
 from loguru import logger
 
@@ -42,7 +42,7 @@ async def test_get(test_params: str = None):
 async def test_get(test_param: str = Path(default=None)):
     for each in range(5):
         await asyncio.sleep(1)
-        logger.debug(f'get 请求处理中： {test_param}')
+        logger.debug(f"get 请求处理中： {test_param}")
 
     return {"test_params": test_param}
 
@@ -51,10 +51,11 @@ async def test_get(test_param: str = Path(default=None)):
 async def test_post(req: Req):
     for each in range(5):
         await asyncio.sleep(1)
-        logger.debug(f'post 请求处理中。 {Req}')
+        logger.debug(f"post 请求处理中。 {Req}")
 
     return {"test_params": Req.request_str}
 
+
 @router.post("/upload_test", description="上传测试")
-async def test_upload(file:UploadFile):
-    
+async def test_upload(file: UploadFile):
+    pass

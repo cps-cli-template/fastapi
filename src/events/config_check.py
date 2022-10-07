@@ -18,7 +18,7 @@ if __name__ == "__main__":
 import os
 from os import path
 
-from loguru import logger
+from utils.log import logger
 from config import Settings
 
 

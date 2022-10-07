@@ -9,13 +9,14 @@ from docs.description import DESCRIPTION, LICENSE_INFO, CONTACT
 
 
 ROOT_PATH = os.getcwd()
+STATIC_PATH = ""
 
 
 class Settings(BaseSettings):
     DEV: bool = True  # 是否开发模式
 
     app_name: str = "CPS 自用FastApi脚手架"
-    app_host: str = "127.0.0.1"  # 地址
+    app_host: str = "0.0.0.0"  # 地址
     app_port: int = 4040  # 端口
     app_version: str = "v1"
     app_description: str = DESCRIPTION
@@ -45,7 +46,7 @@ class Settings(BaseSettings):
 
     # Redis 配置
     redis_enable: bool = False
-    redis_options: T.RedisOptions
+    redis_options: T.RedisOptions = T.RedisOptions()
 
     # 静态目录配置
     static_enable: bool = True  # 开启静态服务

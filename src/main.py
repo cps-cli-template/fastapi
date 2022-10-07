@@ -16,7 +16,7 @@ from fastapi import FastAPI, Depends
 from events import startup
 from config import get_settings, Settings
 
-from utils import logger
+from utils.log import logger
 from routers import docs, static, test, upload
 
 config = get_settings()
@@ -31,9 +31,10 @@ app = FastAPI(
 
 # 启动事件
 startup.init(app)
+upload.init(app)
 
-#
-logger.init(app)
+
+# logger.init(app)
 static.init(app)
 docs.init(app)
 

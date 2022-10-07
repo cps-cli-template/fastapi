@@ -3,12 +3,13 @@ import sys
 from pprint import pformat
 
 from fastapi import FastAPI
-from loguru import logger
+
 from loguru._defaults import LOGURU_FORMAT
 from starlette.requests import Request
 from middleware import logger as m_logger
 
 from config import get_settings
+from utils import logger
 
 
 class InterceptHandler(logging.Handler):
