@@ -31,7 +31,7 @@ class RedisOptions(BaseModel):
 class Res(BaseModel):
     success: bool = True
     msg: str = "请求成功"
-    res: Any
+    res: Any  # 相当于 data
 
 
 class Err(Res):

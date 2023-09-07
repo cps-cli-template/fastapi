@@ -26,6 +26,9 @@ router = APIRouter()
 def init(app: FastAPI, swagger_route: str = "/docs", redoc_route: str = "/redoc"):
     config = get_settings()
 
+    if not config.DEV:
+        return
+
     if not config.swagger_enable:
         return
 

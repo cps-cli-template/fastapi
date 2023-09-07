@@ -1,0 +1,31 @@
+{
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    }
+  },
+  "name": "template-fastapi",
+  "description": "仅作为使用git cz自定义用途",
+  "version": "1.0.0",
+  "main": ".cz-config.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Capsion-demo/fastapi.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Capsion-demo/fastapi/issues"
+  },
+  "homepage": "https://github.com/Capsion-demo/fastapi#readme",
+  "dependencies": {
+    "cz-customizable": "^7.0.0"
+  }
+}

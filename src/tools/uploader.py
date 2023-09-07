@@ -7,7 +7,7 @@
 # @Last Modified time: 2022-07-04 16:13:55.348149
 # @file_path "W:\CPS\MyProject\demo\cps-cli\fastapi-template\tools"
 # @Filename "upload_small_file.py"
-# @Description: 功能描述
+# @Description: 上传模块，一些常用的上传函数
 #
 import aiofiles
 import hashlib
@@ -81,18 +81,33 @@ class Uploader:
             return False
 
     @staticmethod
-    def stream_file(file, output_path: str, chunk_size: int = 10 * 2**20) -> bool:
+    def stream_file(
+        file, output_path: str, output_name: str = None, chunk_size: int = 10 * 2**20
+    ) -> str:
         """
-        大文件上传，以流的形式按量读取保存文件，默10m
+        @Description 以流的形式下载客户端上传的文件，每次只下载chunk_size
+
+        - param file                :{param} 文件对象 fastapi 的
+        - param output_path         :{str}   目录: 输出目录
+        - param output_name         :{str}   名称: 输出名称
+        - param chunk_size=10*2**20 :{int}   {description}
+
+        @returns `{ bool }` {description}
+
         """
+        # 没有指定名称，使用8位的MD5
+        if output_name is None:
+            name, ext = path.splitext(file.filename)
+            output_name = f'{hashlib.md5(name.encode("utf-8")).hexdigest()[:8]}.{ext}'
+
         try:
-            with open(output_path, "wb") as f:  # 分批写入数据
+            with open(path.join(output_path, output_name), "wb") as f:  # 分批写入数据
                 # 从网络文件流分批读取数据到 b'',再写入文件
                 for i in iter(lambda: file.file.read(chunk_size), b""):
                     f.write(i)
-                return True
+                return output_path
         except:
-            return False
+            return ""
 
     @staticmethod
     async def stream_file_async(
@@ -139,7 +154,7 @@ class Uploader:
         # 检查文件是否存在
         md5_obj = hashlib.md5()
         output_path = path.join(output_dir, str(int(time.time())))
-        name, ext = path.splitext(file.filename)
+        _, ext = path.splitext(file.filename)
         try:
             if not batch_size:
                 # 每次写入文件的数据大小，这里代表10 MiB
