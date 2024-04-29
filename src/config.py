@@ -6,7 +6,7 @@ from functools import lru_cache
 
 import Types as T
 from docs.description import DESCRIPTION, LICENSE_INFO, CONTACT
-
+from utils.ip import get_inside_ip, get_computer_name
 
 ROOT_PATH = os.getcwd()
 STATIC_PATH = ""
@@ -22,6 +22,8 @@ class Settings(BaseSettings):
     app_description: str = DESCRIPTION
     app_contact: dict = CONTACT
     app_license_info: dict = LICENSE_INFO
+    app_inner_ip: str = get_inside_ip()
+    app_computer_name: str = get_computer_name()
 
     # 预置中间件
     middleware_cors_enable: bool = False  # 跨域
