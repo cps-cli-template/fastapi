@@ -33,7 +33,7 @@ app = FastAPI(
 )
 
 # 启动事件
-startup.init(app)
+startup.init(app, config)
 upload.init(app)
 
 # 中间件
@@ -61,13 +61,23 @@ if config.DEV:
 
 if __name__ == "__main__":
     from os import path
+    import sys
 
-    file_name = path.splitext(path.basename(__file__))[0]
+    if getattr(sys, "frozen", False):
+        file_name = path.splitext(path.basename(__file__))[0]
+
+        app_inst = f"{file_name}:app"  # 打包后可能启动失败，因为没有py文件了
+
+        reload_flag = config.DEV
+    else:
+        app_inst = app
+        reload_flag = False
+
     uvicorn.run(
-        f"{file_name}:app",
+        app=app_inst,
         host=config.app_host,  # 地址
         port=config.app_port,  # 端口
         log_level=config.log_level,  # 日志等级
-        reload=config.DEV,  # 热更新
+        reload=reload_flag,  # 热更新
     )
     print(f"app 运行成功，请访问: http://{config.app_host}:{config.app_port}")

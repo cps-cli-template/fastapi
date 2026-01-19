@@ -17,21 +17,22 @@ if __name__ == "__main__":
 
 
 from os import path
-from fastapi import FastAPI
+from fastapi import FastAPI, __version__
 
-from config import get_settings
+
+from config import Settings
 from events import config_check
 from utils.helper import print_dict
+from utils.log import logger
 
 
-def init(app: FastAPI) -> FastAPI:
-    config = get_settings()
+def init(app: FastAPI, config: Settings) -> FastAPI:
+    # 检查所有config里面以_path结尾的目录，如果不存在则创建
+    config_check.check_path_and_make(config)
 
-    @app.on_event("startup")
-    def events_config_check():
-        # 检查所有config里面以_path结尾的目录，如果不存在则创建
-        config_check.check_path_and_make(config)
+    # 检查FastAPI版本
+    logger.info(f"app fastAPI ver: {__version__}")
 
-    @app.on_event("startup")
-    def print_config():
-        print_dict(config.dict())
+    logger.info(f"app 运行成功，访问限制为: {config.app_host}")
+    logger.info(f"app 运行成功，内网访问地址1: http://{config.app_inner_ip}:{config.app_port}")
+    logger.info(f"app 运行成功，内网访问地址2: http://{config.app_computer_name}:{config.app_port}")

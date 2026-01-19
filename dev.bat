@@ -10,5 +10,16 @@
 @echo off && setlocal enabledelayedexpansion
 @chcp 65001
 
-poetry run python src/main.py
+
+REM 支持 poetry、pdm、uv
+if exist "pdm.lock" (
+    pdm run python src/main.py
+) else if exist "poetry.lock" (
+    poetry run python src/main.py
+) else if exist "uv.lock" (
+    uv run python src/main.py
+) else (
+    python src/main.py
+)
+
 pause
