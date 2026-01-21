@@ -14,13 +14,13 @@
 
 REM 支持 poetry、pdm、uv
 if exist "pdm.lock" (
-    pdm run python src/main.py
+    pdm run python main.py
 ) else if exist "poetry.lock" (
-    poetry run python src/main.py
+    poetry run python main.py
 ) else if exist "uv.lock" (
-    uv run python src/main.py
+    uv run python main.py
 ) else (
-    python src/main.py
+    python main.py
 )
 
 pause
