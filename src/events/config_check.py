@@ -18,8 +18,8 @@ if __name__ == "__main__":
 import os
 from os import path
 
-from utils.log import logger
-from config import Settings
+from src.utils.log import logger
+from src.config import Settings
 
 
 def check_path_and_make(config: Settings):

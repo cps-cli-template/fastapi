@@ -9,30 +9,28 @@
 # @Filename "startup.py"
 # @Description: 功能描述
 #
-import os, sys
 
-sys.path.append("..")
-if __name__ == "__main__":
-    sys.path.append("../../")
+from fastapi import __version__
 
 
-from os import path
-from fastapi import FastAPI, __version__
+from src.config import Settings
+from src.events import config_check
+from src.utils.helper import print_dict
+from src.utils.log import logger
 
 
-from config import Settings
-from events import config_check
-from utils.helper import print_dict
-from utils.log import logger
-
-
-def init(app: FastAPI, config: Settings) -> FastAPI:
-    # 检查所有config里面以_path结尾的目录，如果不存在则创建
-    config_check.check_path_and_make(config)
-
-    # 检查FastAPI版本
+def print_info(config: Settings):
     logger.info(f"app fastAPI ver: {__version__}")
 
     logger.info(f"app 运行成功，访问限制为: {config.app_host}")
     logger.info(f"app 运行成功，内网访问地址1: http://{config.app_inner_ip}:{config.app_port}")
     logger.info(f"app 运行成功，内网访问地址2: http://{config.app_computer_name}:{config.app_port}")
+
+
+def init(config: Settings):
+    print("on_start_up: ")
+    # 检查目录
+    config_check.check_path_and_make(config)
+
+    # 检查FastAPI版本
+    print_info(config)

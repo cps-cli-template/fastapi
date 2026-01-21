@@ -14,13 +14,12 @@ import os, sys
 sys.path.append("..")
 
 from fastapi import FastAPI
-from config import Settings
 
-from middleware import cors, gzip, http_time
+from src.config import Settings
+from src.middleware import cors, gzip, http_time, swaggerCache, logger
 
 
 def init(app: FastAPI, config: Settings) -> FastAPI:
-
     if config.middleware_gzip_enable:
         gzip.init(app)
 
@@ -28,6 +27,12 @@ def init(app: FastAPI, config: Settings) -> FastAPI:
         cors.init(app)
 
     if config.middleware_http_time_count_enable:
+        print("---------------------------------------------------3")
         http_time.init(app)
 
+    if config.DEV:
+        print("---------------------------------------------------4")
+        swaggerCache.init(app)
+
+    logger.init(app)
     return app

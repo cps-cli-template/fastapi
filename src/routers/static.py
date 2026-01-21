@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from config import get_settings
+from src.config import get_settings
 
 
 def init(app: FastAPI):

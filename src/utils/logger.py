@@ -31,9 +31,7 @@ class InterceptHandler(logging.Handler):
             frame = frame.f_back
             depth += 1
 
-        logger.opt(depth=depth, exception=record.exc_info).log(
-            level, record.getMessage()
-        )
+        logger.opt(depth=depth, exception=record.exc_info).log(level, record.getMessage())
 
 
 def init(app: FastAPI):
@@ -41,6 +39,7 @@ def init(app: FastAPI):
     if not config.log_engine == "loguru":
         return app
 
+    print("+++++++++++++++++++++++++++++++++++++++")
     LOGGING_LEVEL = logging.DEBUG if config.DEV else logging.INFO
     LOGGERS = ("uvicorn.asgi", "uvicorn.access")
 

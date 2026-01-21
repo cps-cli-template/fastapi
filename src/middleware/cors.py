@@ -12,7 +12,6 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from config import get_settings
 
 origins = [
     "http://localhost.tiangolo.com",
@@ -24,11 +23,6 @@ origins = [
 
 
 def init(app: FastAPI) -> FastAPI:
-    config = get_settings()
-
-    if not config.cors_enable:
-        return app
-
     app.add_middleware(
         CORSMiddleware,
         allow_origins=origins,

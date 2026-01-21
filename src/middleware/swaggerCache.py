@@ -13,23 +13,26 @@ import os, sys
 
 sys.path.append("..")
 
-from os import path
-from pathlib import Path
-from pydantic import BaseModel
-
-from fastapi import FastAPI
-from fastapi.middleware.base import BaseHTTPMiddleware
-
-
-class SimpleSwaggerLocalMiddleware(BaseHTTPMiddleware):
-    def __init__(self, app):
-        super().__init__(app)
-        self.static_dir = Path("static/docs")
-        self.static_dir.mkdir(parents=True, exist_ok=True)
+from fastapi import FastAPI, Request
 
 
 def init(app: FastAPI):
-    app.add_middleware()
+    @app.middleware("http")
+    async def run(request: Request, call_next):
+        path = request.url.path
+        print("path: ", path)
+
+        # 如果是swagger静态文件请求.css"]:
+        if "/docs" in path:
+            print("发现swagger页面请求")
+
+        print("---------------------------------------------------5")
+        response = await call_next(request)
+        return response
+
+    print("---------------------------------------------------6")
+
+    return app
 
 
 if __name__ == "__main__":

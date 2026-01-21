@@ -4,9 +4,9 @@ from os import path
 from pydantic import BaseSettings
 from functools import lru_cache
 
-import Types as T
-from docs.description import DESCRIPTION, LICENSE_INFO, CONTACT
-from utils.ip import get_inside_ip, get_computer_name
+import src.Types as T
+from src.docs.description import DESCRIPTION, LICENSE_INFO, CONTACT
+from src.utils.ip import get_inside_ip, get_computer_name
 
 ROOT_PATH = os.getcwd()
 STATIC_PATH = ""
@@ -69,5 +69,5 @@ class Settings(BaseSettings):
 # 缓存配置文件到cache，不用每次调用接口都读取文件io
 @lru_cache
 def get_settings() -> Settings:
-    print("服务器初始化: ", os.getcwd())
+    print("服务器根目录: ", os.getcwd())
     return Settings()

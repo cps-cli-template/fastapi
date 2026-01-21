@@ -18,10 +18,10 @@ from fastapi import APIRouter, FastAPI, File, Form, BackgroundTasks
 from fastapi import UploadFile, Depends, HTTPException
 from fastapi.responses import HTMLResponse
 
-from tools.uploader import Uploader
-from config import get_settings, Settings
-from Types import Res, Err, Fileinfo
-from utils.log import logger
+from src.tools.uploader import Uploader
+from src.config import get_settings, Settings
+from src.Types import Res, Err, Fileinfo
+from src.utils.log import logger
 
 router = APIRouter()
 

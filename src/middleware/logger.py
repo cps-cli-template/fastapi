@@ -1,9 +1,13 @@
+# from utils.log import logger
 from loguru import logger
+
 from starlette.routing import Match
 from fastapi import FastAPI, Request
 
 
 def init(app: FastAPI):
+    print("-*-*-*-*-*-*-*-*-*-*")
+
     @app.middleware("http")
     async def log_middle(request: Request, call_next):
         """
@@ -12,9 +16,9 @@ def init(app: FastAPI):
         - param request   :{Request} {description}
         - param call_next :{param}   {description}
 
-        @returns `{}` {description}
-
         """
+        print("-*-*-*-*-*-*-*-*-*-*")
+
         logger.info(f"{request.method} {request.url}")
         routes = request.app.router.routes
         logger.debug("Params:")
